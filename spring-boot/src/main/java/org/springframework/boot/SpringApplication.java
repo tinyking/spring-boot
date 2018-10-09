@@ -262,14 +262,22 @@ public class SpringApplication {
 		this.resourceLoader = resourceLoader;
 		Assert.notNull(primarySources, "PrimarySources must not be null");
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
+		// 推断应用类型
 		this.webApplicationType = deduceWebApplication();
+
+		// 设置初始化工具
 		setInitializers((Collection) getSpringFactoriesInstances(
 				ApplicationContextInitializer.class));
+
+		// 设置监听工具
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+
+		// 推断main类
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
 
 	private WebApplicationType deduceWebApplication() {
+		// isPresent通过反射的方式，判断类是否存在
 		if (ClassUtils.isPresent(REACTIVE_WEB_ENVIRONMENT_CLASS, null)
 				&& !ClassUtils.isPresent(MVC_WEB_ENVIRONMENT_CLASS, null)) {
 			return WebApplicationType.REACTIVE;
@@ -279,6 +287,7 @@ public class SpringApplication {
 				return WebApplicationType.NONE;
 			}
 		}
+		// Servlet方式的web应用
 		return WebApplicationType.SERVLET;
 	}
 
