@@ -32,7 +32,6 @@ public class StartUpLoggerTests {
 
 	@SuppressWarnings("serial")
 	private final SimpleLog log = new SimpleLog("test") {
-		@Override
 		protected void write(StringBuffer buffer) {
 			StartUpLoggerTests.this.output.append(buffer).append("\n");
 		};
